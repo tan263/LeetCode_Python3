@@ -1,0 +1,99 @@
+class Solution:
+    def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
+        def sub(nums1: List[int], nums2: List[int]) -> float:
+            n1_init = len(nums1)-1
+            n2_init = len(nums2)-1
+            
+            if n2_init<n1_init:
+                temp = nums1
+                nums1 = nums2
+                nums2 = temp
+            n1 = min(n1_init,n2_init)
+            n2 = max(n1_init,n2_init)
+            
+            if n1<1:
+                if n1<0:
+                    return (nums2[n2//2]+nums2[n2//2+n2%2])/2
+                elif n1==0 and n2==0:
+                    return (nums1[0]+nums2[0])/2
+                else:
+                    if nums1[n1]<=nums2[0]:
+                        num = nums1+nums2
+                        n = n1+n2+1
+                        return (num[n//2]+num[n//2+n%2])/2
+                    if nums1[0]>=nums2[n2]:
+                        #print('h')
+                        num = nums2+nums1
+                        n = n1+n2+1
+                        return (num[n//2]+num[n//2+n%2])/2
+                    else:
+                        l2 = n2//2
+                        r2 = l2 + n2%2
+                        L2 = nums2[l2]
+                        R2 = nums2[r2]
+                        #m2 = (L2+R2)/2
+                        m1 = nums1[0]
+                        
+                        if m1 < L2:
+                            if l2==r2:
+                                return (max(m1,nums2[l2-1])+L2)/2
+                            return L2
+                        elif m1 > R2:
+                            if l2==r2:
+                                return (min(m1,nums2[r2+1])+L2)/2
+                            return R2
+                        else:
+                            return m1
+                  
+            l1 = n1//2
+            r1 = l1 + n1%2
+            l2 = n2//2
+            r2 = l2 + n2%2
+            
+            L1 = nums1[l1]
+            L2 = nums2[l2]
+            R1 = nums1[r1]
+            R2 = nums2[r2]
+            
+            if n1==1 and n2>1:
+                if R1<=L2:
+                    if l2==r2:
+                        return max(R1,nums2[l2-1])
+                    else:
+                        return (max(R1,nums2[l2-1])+L2)/2
+                elif L1<=L2 and R1>=R2:
+                    return (L2+R2)/2
+                elif L2<=L1 and R2>=R1:
+                    return (L1+R1)/2
+                elif L1<=L2 and L2<=R1 and R1<=R2:
+                    return (L2+R1)/2
+                elif L2<=L1 and L1<=R2 and R2<=R1:
+                    return (L1+R2)/2
+                else:
+                    if l2==r2:
+                        return min(L1,nums2[r2+1])
+                    else:
+                        return (min(L1,nums2[r2+1])+R2)/2
+            
+            if n1==n2 and n1==1:
+                a=max(L1,L2)
+                b=min(R1,R2)
+                return (a+b)/2
+            
+            m1 = (L1+R1)/2
+            m2 = (L2+R2)/2
+
+            if m1<m2:
+                nums1 = nums1[l1:]
+                nums2 = nums2[:n2-l1+1]
+            elif m1>m2:
+                nums1 = nums1[:n1-l1+1]
+                nums2 = nums2[l1:]     
+            else:
+                return m1
+            print(nums1)
+            print(nums2) 
+
+            return sub(nums1,nums2)
+        
+        return sub(nums1, nums2)
