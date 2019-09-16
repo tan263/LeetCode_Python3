@@ -1,0 +1,53 @@
+class Solution:
+    def longestPalindrome(self, s: str) -> str:
+        l = len(s)
+        
+        if l==0:
+            return ""
+        if l==1:
+            return s
+        
+        even = [""]*(l-1)
+        odd = [""]*(l-1)
+        
+        for i in range(l-1):
+            right = l-i-1
+            odd[i] = s[i]
+            add_e = False
+            if s[i+1]==s[i]:
+                even[i]=s[i]+s[i+1]
+                add_e = True
+            o = odd[i]
+            e = even[i]
+            add_o = True
+            for j in range(min(i,right)):
+                if add_o == False and add_e == False:
+                    break
+                if s[i-j-1]==s[i+j+1] and add_o==True:
+                    o = s[i-j-1] + o + s[i+j+1]
+                else:
+                    add_o = False
+                if i+j+2 < l and add_e==True:
+                    if s[i-j-1]==s[i+j+2]:
+                        e = s[i-j-1] + e + s[i+j+2]
+                    else:
+                        add_e = False
+                else:
+                    add_e = False
+                    
+            odd[i] = o
+            even[i] = e
+        
+        l_r = 0
+        r = None
+        
+        for e in even:
+            if len(e)>l_r:
+                r = e
+                l_r = len(e)
+        for o in odd:
+            if len(o)>l_r:
+                r = o
+                l_r = len(o)
+        
+        return r
