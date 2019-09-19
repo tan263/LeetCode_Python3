@@ -1,0 +1,32 @@
+class Solution:
+    def maxArea(self, height: List[int]) -> int:
+        
+        r = len(height)-1
+        
+        if r == 1:
+            return min(height[0], height[1])*r
+            
+        l=0
+        
+        h_l = height[l]
+        h_r = height[r]
+        if h_l < h_r:
+            output = h_l*r
+            l = l + 1
+        else:
+            output = h_r*r
+            r = r - 1
+        
+        while l <= r:
+            h_l = height[l]
+            h_r = height[r]
+            if h_l < h_r:
+                current = h_l*(r-l)
+                l = l + 1
+            else:
+                current = h_r*(r-l)
+                r = r - 1
+            if current > output:
+                output = current
+        
+        return output
