@@ -1,0 +1,24 @@
+import numpy as np
+from numpy.linalg import matrix_power
+class Solution:
+    def knightProbability(self, N: int, K: int, r: int, c: int) -> float:
+        P = np.array(np.zeros(((N+4)**2,(N+4)**2)))
+        for i in range(2,N+2):
+            for j in range(2,N+2):
+                o = i*(N+4)+j
+                D =[(i-2)*(N+4)+j-1, (i-2)*(N+4)+j+1, \
+                (i-1)*(N+4)+j-2, (i-1)*(N+4)+j+2, \ 
+                (i+1)*(N+4)+j-2, (i+1)*(N+4)+j+2, \
+                (i+2)*(N+4)+j-1, (i+2)*(N+4)+j+1]
+                
+                for d in D:
+                    P[o, d] = 1/8
+        
+        P_K = matrix_power(P, K)
+        
+        O = (r+2)*(N+4)+c+2
+        
+        P_o = P_K[O,:].reshape(N+4,N+4)
+        
+        return sum(sum(P_o[2:N+2,2:N+2]))
+        
