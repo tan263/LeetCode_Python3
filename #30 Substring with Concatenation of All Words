@@ -1,0 +1,49 @@
+class Solution:
+    def findSubstring(self, s: str, words: List[str]) -> List[int]:
+        L = len(words)
+        l_s = len(s)
+        if L == 0: return []
+        l_w = len(words[0])
+        output = []
+        
+        D = {e:[] for e in words}
+        D_count = {e:0 for e in words}
+        
+        for e in words:
+            D_count[e] += 1
+            
+        for i in range(l_s):
+            c = s[i:i+l_w]
+            if c in D:
+                D[c].append(i)
+        
+        if "" in D:
+            D[""].append(l_s)
+        
+        for e in D:
+            for k in D[e]:
+                if k + L*l_w <= l_s:
+                    n = 1
+                    i = k
+                    D_temp = []
+                    D_count_temp = D_count.copy()
+                    D_count_temp[e] -= 1
+                    if D_count_temp[e] == 0:
+                        D_temp.append(e)
+                    while n < L:
+                        i = i+l_w
+                        if i < l_s-l_w+1:
+                            c = s[i:i+l_w]
+                            if c not in D_temp and c in D:
+                                n += 1
+                                D_count_temp[c] -= 1
+                                if D_count_temp[c] == 0:
+                                    D_temp.append(c)
+                            else:
+                                break
+                        else:
+                            break
+                    if n == L:
+                        output.append(k)
+        
+        return output
