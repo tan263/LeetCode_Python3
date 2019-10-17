@@ -1,0 +1,23 @@
+class Solution:
+    def nextPermutation(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        l = len(nums)
+        
+        temp = nums[l-2]
+        for i in range(l-2,-1,-1):
+            nums[i:l] = sorted(nums[i:])
+            if temp < nums[i]:
+                break
+            else:
+                k = nums[i:].index(temp)+1+i
+                while k < l-1 and nums[k] <= temp:
+                    k += 1
+                if k < l and nums[k]>temp:
+                    nums.insert(i, nums.pop(k))
+                    break
+                elif i>0:
+                    temp = nums[i-1]
+                else:
+                    break
