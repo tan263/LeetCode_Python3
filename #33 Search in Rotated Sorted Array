@@ -1,0 +1,34 @@
+class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+        l = len(nums)
+        a = 0
+        b = l-1
+        while b-a>1:
+            n = (a+b)//2
+            if nums[a] >= nums[b]:
+                if nums[a] <= nums[n]:
+                    if target >= nums[a] and target <= nums[n]:
+                        b = n
+                    else:
+                        a = n
+                else:
+                    if target >= nums[n] and target <= nums[b]:
+                        a = n
+                    else:
+                        b = n
+            elif nums[a] <= target and target <= nums[b]:
+                if nums[n] <= target:
+                    a = n
+                else:
+                    b = n
+            else:
+                return -1
+        
+        if l == 0: 
+            return -1
+        elif nums[a] == target:
+            return a
+        elif nums[b] == target:
+            return b
+        else:
+            return -1
