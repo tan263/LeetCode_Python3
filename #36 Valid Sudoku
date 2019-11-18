@@ -1,0 +1,19 @@
+class Solution:
+    def isValidSudoku(self, board: List[List[str]]) -> bool:
+        h = dict(enumerate([[] for i in range(9)]))
+        v = dict(enumerate([[] for i in range(9)]))
+        s = dict(enumerate([[] for i in range(9)]))
+        
+        for i in range(9):
+            for j in range(9):
+                b = board[i][j] 
+                k = i//3*3 + j//3
+                if b != ".":
+                    if b in h[i] or b in v[j] or b in s[k]:
+                        return False
+                    else:
+                        h[i].append(b)
+                        v[j].append(b)
+                        s[k].append(b)
+        
+        return True
