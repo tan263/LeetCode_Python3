@@ -1,0 +1,38 @@
+class Solution:  
+    def solveSudoku(self, board: List[List[str]]) -> None:
+        """
+        Do not return anything, modify board in-place instead.
+        """
+        num = set(['1','2','3','4','5','6','7','8','9'])
+        empty = [[i,j] for i in range(9) for j in range(9) if board[i][j] == "."]
+        choices = [None]*len(empty)
+        
+        k = 0 
+        i = empty[k][0]
+        j = empty[k][1]
+        h = i - i % 3
+        v = j - j % 3
+        exist = set(board[i][:] + [x[j] for x in board] + board[h][v:v+3] + board[h+1][v:v+3] + board[h+2][v:v+3])
+        choices[k] = num - exist
+
+        while board[empty[-1][0]][empty[-1][1]] == ".":
+            #print(choices[k],k+1)
+            board[empty[k][0]][empty[k][1]] = choices[k].pop()
+            
+            #print(board)
+            #print(" ")
+
+            if k == len(choices)-1:
+                break
+
+            k = k + 1
+            i = empty[k][0]
+            j = empty[k][1]
+            h = i - i % 3
+            v = j - j % 3
+            exist = set(board[i][:] + [x[j] for x in board] + board[h][v:v+3] + board[h+1][v:v+3] + board[h+2][v:v+3])
+            choices[k] = num - exist
+
+            while choices[k]==set():
+                k = k - 1
+                board[empty[k][0]][empty[k][1]] = '.'
