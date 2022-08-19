@@ -1,0 +1,12 @@
+class Solution:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        storage = defaultdict(list)
+        for i in range(0, len(strs)):
+            s = strs[i]
+            currentKeyDict = [0] * 26
+            for letter in s:
+                currentKeyDict[ord(letter)-ord('a')] += 1
+            key = tuple(currentKeyDict)
+            storage[key].append(s)
+        
+        return storage.values()
