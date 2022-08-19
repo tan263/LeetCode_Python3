@@ -1,0 +1,24 @@
+class Solution:
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        counter = {}
+        for n in nums:
+            if n in counter:
+                counter[n] += 1
+            else:
+                counter[n] = 1
+        reverse = [None]*len(nums)
+        for n in counter:
+            if reverse[counter[n]-1] is None:
+                reverse[counter[n]-1] = [n]
+            else:
+                reverse[counter[n]-1].append(n)
+        result = [None]*k   
+        j = 0
+        for i in range(0, len(reverse)):
+            if reverse[len(reverse)-i-1] is not None:
+                for n in reverse[len(reverse)-i-1]:
+                    result[j] = n
+                    j += 1
+            if j >= k:
+                break
+        return result
