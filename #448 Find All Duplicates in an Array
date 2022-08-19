@@ -1,0 +1,10 @@
+class Solution:
+    def findDuplicates(self, nums: List[int]) -> List[int]:
+        n = len(nums)
+        for k in nums:
+            if k > 2*n:
+                k -= 2*n
+            if k > n:
+                k -= n
+            nums[k-1] = nums[k-1] + n 
+        return [i+1 for i, k in enumerate(nums) if k > 2*n]
